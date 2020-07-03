@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div> <!-- 결과 <div id="root"><button>Like</button></div> -->
+    <script type="text/babel">
+      class GuGuDan extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            first : Math.ceil(Math.random() * 9),
+            second : Math.ceil(Math.random() * 9),
+            value : '',
+            result : ''
+          };
+        }
+
+        // 함수를 빼지 않고 직접 넣어놓으면 render 될 때마다 함수를 새로 생성하기 때문에 비효율적
+        onSubmit = (e) => {
+          e.preventDefault();
+          if (parseInt(this.state.value) === this.state.first * this.state.second) {
+            this.setState( ( prevState ) => { // setState에 새로운 state를 return하는 함수를 넣는 방법 // prevState 예전 상태값을 다음 상태값에 활용 가능
+            // count
+              return {
+                result: '정답: ' + prevState.value,
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                value: '',
+              }
+            } );
+            this.input.focus();
+            // this.setState({
+            //   result: '정답: ' + this.state.value, // 현재값이 바꿀 값(미래값)과 같이 있는 경우
+            //   first: Math.ceil(Math.random() * 9),
+            //   second: Math.ceil(Math.random() * 9),
+            //   value: '',
+            // });
+          } else {
+            this.setState({
+              result: '땡',
+              value: '',
+            });
+          }
+        };
+
+        onChange = (e) => {
+          this.setState({ value : e.target.value });
+        };
+
+        input;
+
+        onRefInput = (c) => { this.input = c; 
+
+        render () {
+          console.log('rendering'); // state의 값이 변할 때 마다 rendering 됨
+          return (
+            // 의미없는 <div>태그 대신 사용 가능
+            <React.Fragment> 
+              <div>{this.state.first} 곱하기 {this.state.second} 는?</div>
+              <form onSubmit={this.onSubmit}>
+                <input ref={this.onRefInput} type="number" value={this.state.value} onChange={this.onChange}/> 
+                <button> 입력 </button>
+              </form>
+              <div>{this.state.result}</div>
+            </React.Fragment>
+          )
+        }
+      }
+    </script>
+    <script type="text/babel">
+      ReactDOM.render(<GuGuDan />, document.querySelector('#root'));
+    </script>
+  </body>
+</html>
