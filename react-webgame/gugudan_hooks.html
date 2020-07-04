@@ -53,7 +53,15 @@
         const onSubmitForm = (e) => {
           e.preventDefault();
           if (parseInt(value) === first * second) {
+            // setState 할 때마다 렌더링이 일어난다고 해서 set어쩌구 할 때마다 렌더링이 일어나는 것 (동기) XXX
+            // form submit 할 때 렌더링은 단 한 번만 (비동기) // setState를 모아서 한번에 처리 (react가 알아서 처리해줌)
+            // setState에 함수를 넣어서 state 값을 처리한 이유도 위와 같은 이유 때문 ! 
             setResult('정답 : ' + value);
+            // setState 할 때 함수 넣는 경우 처럼 함수를 넣는 경우 (예전 state를 쓰는 경우)
+            // setResult( (prevResult) => {
+            //   return '정답 : ' + value
+            // })
+            // setCounter( (c) => c + 1 ) // state가 비동기인 문제가 발생하지 않음
             setFirst(Math.ceil(Math.random() * 9));
             setSecond(Math.ceil(Math.random() * 9));
             setValue('');
@@ -64,7 +72,7 @@
             inputRef.current.focus();
           }
         };
-
+        console.log('rendering');
         return (
           <React.Fragment> 
             <div>{first} 곱하기 {second} 는?</div>
