@@ -16,12 +16,35 @@
       //     };
       // }
       
+      // 문제점
+      // !state가 바뀌면 함수 자체가 통채로 다시 실행되기 때문에 class 사용할 때 보다 조금 더 느릴 수 있음! // class는 render 함수만 다시 실행됨
       const GuGuDan = () => {
         const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
         const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
         const [value, setValue] = React.useState('');
         const [result, setResult] = React.useState('');
         const inputRef = React.useRef(null);
+
+        /*
+        const [state, setState] = React.useState({
+          first : Math.ceil(Math.random() * 9),
+          second : Math.ceil(Math.random() * 9),
+          value : '',
+          result : ''
+        });
+        
+        이 방식도 가능은 함.
+        다만, setState 할 때 문제가 생김
+        부분적으로 state를 바꾸어야 할 때 (state 4가지 중 골라서 바꾸어야 할 경우) 나머지 다른 state 값이 사라져 버림
+
+        const onChangeInput = (e) => {
+          setState({
+            value: ''
+          });
+        };
+
+        나머지 first, second, result 값이 사라져버림 // 아예 사라짐
+        */
 
         const onChangeInput = (e) => {
           setValue(e.target.value);
